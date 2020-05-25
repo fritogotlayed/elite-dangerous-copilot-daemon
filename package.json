@@ -1,0 +1,43 @@
+{
+  "name": "elite-dangerous-copilot-daemon",
+  "version": "1.0.0",
+  "description": "Daemon to provide ED log resources via http API",
+  "main": "./bin/server",
+  "scripts": {
+    "server": "./bin/server",
+    "test": "NODE_ENV=test mocha",
+    "test-cov": "NODE_ENV=test nyc mocha",
+    "lint": "eslint 'src/**'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MadDonkeySoftware/elite-dangerous-copilot-daemon.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MadDonkeySoftware/elite-dangerous-copilot-daemon/issues"
+  },
+  "homepage": "https://github.com/MadDonkeySoftware/elite-dangerous-copilot-daemon#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.12",
+    "chokidar": "^3.4.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "socket.io": "^2.3.0",
+    "tail": "^2.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "mocha": "^7.1.1",
+    "nexe": "^3.3.2",
+    "nyc": "^15.0.1",
+    "sinon": "^9.0.2",
+    "sinon-chai": "^3.5.0",
+    "supertest": "^4.0.2"
+  }
+}

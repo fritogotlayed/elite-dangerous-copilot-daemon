@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+const nexe = require('nexe');
+
+nexe.compile({
+  targets: [
+    'linux-x64',
+    'windows-x64-6.11.2',
+  ],
+}).then(() => {
+  console.log('Compilation Successful');
+});
