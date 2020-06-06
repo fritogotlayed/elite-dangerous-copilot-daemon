@@ -1,23 +1,32 @@
 #!/usr/bin/env node
+const yargs = require('yargs');
 const http = require('http');
 
 const src = require('../src');
 const globals = require('../src/globals');
-const fileWatcher = require('../src/handlers/file-watcher');
 const appShutdown = require('../src/handlers/app_shutdown');
 
-const eliteLogDirectory = process.argv[2] || process.env.EDD_LOG_DIR;
+const startServer = (argv) => {
+  const logger = globals.getLogger();
+  const { port } = argv;
+  const app = src.buildApp();
 
-const logger = globals.getLogger();
-const port = 8888;
-const app = src.buildApp();
+  const server = http.Server(app);
+  const socketShutdown = src.wireSocketIO(server, app);
 
-const server = http.Server(app);
-const fileWatcherData = fileWatcher.wire(server);
-fileWatcher.watchPath(eliteLogDirectory, fileWatcherData.socket);
+  appShutdown.wire(() => {
+    socketShutdown();
+  });
 
-appShutdown.wire(() => {
-  fileWatcherData.shutdownHandler();
-});
+  server.listen(port, () => logger.info(`Example app listening on port ${port}!`));
+};
 
-server.listen(port, () => logger.info(`Example app listening on port ${port}!`));
+const { argv } = yargs
+  .command('', 'Starts the server')
+  .option('port', {
+    default: 8888,
+    alias: 'p',
+    description: 'The port to run the http server on',
+  });
+
+startServer(argv);

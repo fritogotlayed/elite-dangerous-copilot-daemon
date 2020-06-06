@@ -1,5 +1,7 @@
 const express = require('express');
 
+const repo = require('../repo');
+
 const router = express.Router();
 
 const sampleHandler = (request, response) => {
@@ -18,6 +20,24 @@ const sampleHandler = (request, response) => {
   response.send();
 };
 
+const watchHandler = (request, response) => {
+  const { body } = request;
+  const { directory } = body;
+
+  const msg = {
+    ts: new Date().toISOString(),
+    message: `Watching directory ${directory}.`,
+  };
+
+  repo.watchDirectory(directory);
+
+  response.write(JSON.stringify(msg));
+
+  response.status(201);
+  response.send();
+};
+
 router.get('/sample/:param1', sampleHandler);
+router.post('/watch', watchHandler);
 
 module.exports = router;

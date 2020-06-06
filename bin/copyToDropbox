@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+zip edCopilot.linux.zip ./edCopilot
+zip ED-Copilot.windows.zip ./ED-Copilot.exe
+
+cp ./edCopilot.linux.zip /home/malline/Dropbox/Public
+cp ./ED-Copilot.windows.zip /home/malline/Dropbox/Public
+
+yes | rm ./ED-Copilot.windows.zip
+yes | rm ./edCopilot.linux.zip

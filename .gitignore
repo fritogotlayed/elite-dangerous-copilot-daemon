@@ -61,3 +61,6 @@ typings/
 .next
 
 .vscode/
+
+# Static site is from a different repo
+src/static

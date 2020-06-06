@@ -1,11 +1,38 @@
-#!/usr/bin/env node
-const nexe = require('nexe');
+#!/usr/bin/env sh
 
-nexe.compile({
-  targets: [
-    'linux-x64',
-    'windows-x64-6.11.2',
-  ],
-}).then(() => {
-  console.log('Compilation Successful');
-});
+# const nexe = require('nexe');
+
+# const compileWindows = async () => nexe.compile({
+#   output: 'ED-Copilot.exe',
+#   targets: ['windows-x64-6.11.2'],
+#   resources: [
+#     './src/**/*',
+#     './node_modules/**/*',
+#   ],
+# }).then(() => {
+#   console.log('Windows Compilation Successful');
+# });
+
+# const compileLinux = async () => nexe.compile({
+#   output: 'edCopilot',
+#   targets: ['linux-x64'],
+#   resources: [
+#     './src/**/*',
+#     './node_modules/**/*',
+#   ],
+# }).then(() => {
+#   console.log('Linux Compilation Successful');
+# });
+
+# const main = async () => {
+#   await compileLinux();
+#   await compileWindows();
+# };
+
+# main();
+
+rm -rf ./node_modules;
+npm install --only=prod;
+npx nexe -o edCopilot -t 'linux-x64' -r './src/**/*' -r './node_modules/**/*';
+npx nexe -o ED-Copilot.exe -t 'windows-x64-6.11.2' -r './src/**/*' -r './node_modules/**/*';
+npm install

@@ -4,7 +4,7 @@
   "description": "Daemon to provide ED log resources via http API",
   "main": "./bin/server",
   "scripts": {
-    "server": "./bin/server",
+    "server": "NODE_ENV=local ./bin/server",
     "test": "NODE_ENV=test mocha",
     "test-cov": "NODE_ENV=test nyc mocha",
     "lint": "eslint 'src/**'"
@@ -26,15 +26,16 @@
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "socket.io": "^2.3.0",
-    "tail": "^2.0.3"
+    "tail": "^2.0.3",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "cors": "^2.8.5",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "mocha": "^7.1.1",
-    "nexe": "^3.3.2",
     "nyc": "^15.0.1",
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0",
