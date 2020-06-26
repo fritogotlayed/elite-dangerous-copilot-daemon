@@ -34,5 +34,5 @@
 rm -rf ./node_modules;
 npm install --only=prod;
 npx nexe -o edCopilot -t 'linux-x64' -r './src/**/*' -r './node_modules/**/*';
-npx nexe -o ED-Copilot.exe -t 'windows-x64-6.11.2' -r './src/**/*' -r './node_modules/**/*';
+npx nexe -b -o ED-Copilot.exe -t 'windows-x64-6.11.2' -r './src/**/*' -r './node_modules/**/*';
 npm install

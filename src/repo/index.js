@@ -26,6 +26,8 @@ const processEvent = (key, data) => {
   // sock.emit(key, data);
 };
 
+const isConfigured = () => !!dirWatcher && !!fileWatcher;
+
 const watchDirectory = (directoryPath) => {
   const logger = globals.getLogger();
   const watchOpts = {
@@ -99,8 +101,19 @@ const watchDirectory = (directoryPath) => {
   });
 };
 
+const {
+  createWalletAdjustment,
+  getJumpData,
+  getMissionData,
+  getWalletData,
+} = repoData;
 
 module.exports = {
+  createWalletAdjustment,
+  getJumpData,
+  getMissionData,
+  getWalletData,
+  isConfigured,
   wireSocket,
   watchDirectory,
 };

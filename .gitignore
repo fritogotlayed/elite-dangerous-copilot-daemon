@@ -64,3 +64,6 @@ typings/
 
 # Static site is from a different repo
 src/static
+
+edCopilot
+ED-Copilot.exe

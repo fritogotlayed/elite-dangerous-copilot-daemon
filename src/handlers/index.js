@@ -4,18 +4,12 @@ const repo = require('../repo');
 
 const router = express.Router();
 
-const sampleHandler = (request, response) => {
-  const { params, body } = request;
-  const { param1 } = params;
-
+const isConfiguredHandler = (request, response) => {
   const msg = {
-    ts: new Date().toISOString(),
-    topic: param1,
-    message: body,
+    isConfigured: repo.isConfigured(),
   };
 
   response.write(JSON.stringify(msg));
-
   response.status(200);
   response.send();
 };
@@ -37,7 +31,46 @@ const watchHandler = (request, response) => {
   response.send();
 };
 
-router.get('/sample/:param1', sampleHandler);
+const getJumpDataHandler = (request, response) => {
+  response.write(JSON.stringify(repo.getJumpData()));
+  response.status(200);
+  response.send();
+};
+
+const getMissionDataHandler = (request, response) => {
+  response.write(JSON.stringify(repo.getMissionData()));
+  response.status(200);
+  response.send();
+};
+
+const getWalletDataHandler = (request, response) => {
+  response.write(JSON.stringify(repo.getWalletData()));
+  response.status(200);
+  response.send();
+};
+
+const createWalletAdjustment = (request, response) => {
+  const { body } = request;
+  const { expectedAmount } = body;
+
+  if (Number.isNaN(+expectedAmount)) {
+    response.status(500);
+    response.send();
+    return;
+  }
+
+  repo.createWalletAdjustment(+expectedAmount);
+
+  response.status(200);
+  response.send();
+};
+
+router.get('/isConfigured', isConfiguredHandler);
+router.get('/data/jumps', getJumpDataHandler);
+router.get('/data/missions', getMissionDataHandler);
+router.get('/data/wallet', getWalletDataHandler);
+router.post('/walletAdjustment', createWalletAdjustment);
 router.post('/watch', watchHandler);
+
 
 module.exports = router;

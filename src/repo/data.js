@@ -24,7 +24,10 @@ const emitUpdate = (section) => {
   if (runningData[handleKey] !== -1) clearTimeout(runningData[handleKey]);
   runningData[handleKey] = setTimeout(() => {
     const logger = globals.getLogger();
-    logger.debug({ section, data: runningData[section] }, 'Emitting update');
+
+    if (logger.trace()) logger.trace({ section, data: runningData[section] }, 'Emitting update');
+    else if (logger.debug()) logger.debug({ section }, 'Emitting update');
+
     runningData[handleKey] = -1;
     socket.emit(section, runningData[section]);
   },
@@ -75,7 +78,9 @@ const processMissions = (data) => {
 const processLoadGame = (data) => {
   runningData.walletData.balance = data.Credits;
   runningData.walletData.log = [];
+  runningData.missionLog = [];
   emitUpdate('walletData');
+  emitUpdate('missionLog');
 };
 
 const handleCredit = (data, keys) => {
@@ -194,8 +199,44 @@ const processEvent = (key, data) => {
   }
 };
 
+const getJumpData = () => runningData.jumpLog;
+
+const getMissionData = () => runningData.missionLog;
+
+const getWalletData = () => runningData.walletData;
+
+const createWalletAdjustment = (expectedBalance) => {
+  /* balance + adjustment = expectedBalance
+   * balance - balance + adjustment = expectedBalance - balance
+   * adjustment = expectedBalance - balance
+   */
+  const adjustmentAmount = (+expectedBalance - runningData.walletData.balance);
+
+  if (adjustmentAmount > 0) {
+    handleCredit({
+      Total: adjustmentAmount,
+      event: 'CreditAdjustment',
+      timestamp: new Date().toISOString(),
+    },
+    'Total');
+  }
+
+  if (adjustmentAmount < 0) {
+    handleDebit({
+      Total: adjustmentAmount * -1,
+      event: 'DebitAdjustment',
+      timestamp: new Date().toISOString(),
+    },
+    'Total');
+  }
+};
+
 module.exports = {
+  createWalletAdjustment,
+  getJumpData,
+  getMissionData,
+  getWalletData,
+  processEvent,
   resetData,
   wireSocket,
-  processEvent,
 };

@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const bunyan = require('bunyan');
 const bunyanLogstashHttp = require('./bunyan-logstash-http');
 
@@ -26,9 +27,17 @@ const buildLogStreams = () => {
   return logStreams;
 };
 
+const getUserLogLevel = () => {
+  const userData = _.lowerCase(process.env.LOG_LEVEL);
+  if (userData === 'debug') return bunyan.DEBUG;
+  if (userData === 'info') return bunyan.INFO;
+  if (userData === 'trace') return bunyan.TRACE;
+  return bunyan.INFO;
+};
+
 const logger = bunyan.createLogger({
   name: 'elite-dangerous-copilot-daemon',
-  level: bunyan.DEBUG,
+  level: getUserLogLevel(),
   serializers: bunyan.stdSerializers,
   streams: buildLogStreams(),
 });
